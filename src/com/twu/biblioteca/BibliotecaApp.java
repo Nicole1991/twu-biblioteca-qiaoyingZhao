@@ -4,7 +4,7 @@ import com.twu.biblioteca.controller.LoginController;
 import com.twu.biblioteca.controller.MenuController;
 import com.twu.biblioteca.service.BookService;
 import com.twu.biblioteca.entity.BookEntity;
-import com.twu.biblioteca.model.OperationBookMessage;
+import com.twu.biblioteca.model.OperationMessage;
 import com.twu.biblioteca.viewpage.View;
 
 import java.util.Scanner;

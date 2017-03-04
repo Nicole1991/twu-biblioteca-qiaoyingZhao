@@ -1,6 +1,7 @@
 package com.twu.biblioteca.viewpage;
 
 import com.twu.biblioteca.service.BookService;
+import com.twu.biblioteca.service.MovieService;
 
 /**
  * Created by Qiaoying Zhao on 2017/2/25.
@@ -26,4 +27,12 @@ public class View {
         }
     }
 
+    public static void printMovieList() {
+        MovieService movieService = MovieService.getInstance();
+        String movieString = movieService.getMovieListStr();
+        String[] movieList = movieString.split("\r");
+        for (String movie:movieList) {
+            printPrompt(movie);
+        }
+    }
 }

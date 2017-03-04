@@ -1,7 +1,7 @@
 package com.twu.biblioteca.service;
 
 import com.twu.biblioteca.entity.BookEntity;
-import com.twu.biblioteca.model.OperationBookMessage;
+import com.twu.biblioteca.model.OperationMessage;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -88,12 +88,12 @@ public class BookService {
      * @param inputBookName
      * @return
      */
-    private OperationBookMessage checkoutBook(Integer inputId,String inputBookName) {
+    private OperationMessage checkoutBook(Integer inputId,String inputBookName) {
         String failMsg = "That book is not available.";
         String successMsg = "Thank you! Enjoy the book";
 
         if (inputId < 1 && inputBookName == null)
-            return new OperationBookMessage(false, failMsg);
+            return new OperationMessage(false, failMsg);
         inputId = inputId == null ? 0 : inputId;
         inputBookName = inputBookName == null ? "" : inputBookName;
 
@@ -105,19 +105,19 @@ public class BookService {
             }
         }
         if (checkoutBook == null)
-            return new OperationBookMessage(false,failMsg);
+            return new OperationMessage(false,failMsg);
 
         bookList.remove(checkoutBook);
         checkoutBookList.add(checkoutBook);
 
-        return new OperationBookMessage(true,successMsg);
+        return new OperationMessage(true,successMsg);
     }
 
-    public OperationBookMessage checkoutBook(Integer id){
+    public OperationMessage checkoutBook(Integer id){
         return checkoutBook(id,null);
     }
 
-    public OperationBookMessage checkoutBook(String bookName){
+    public OperationMessage checkoutBook(String bookName){
         return checkoutBook(null,bookName);
     }
 
@@ -127,12 +127,12 @@ public class BookService {
      * @param inputBookName
      * @return
      */
-    private OperationBookMessage returnBook(Integer inputId,String inputBookName) {
+    private OperationMessage returnBook(Integer inputId,String inputBookName) {
         String failMsg = "That is not a valid book to return";
         String successMsg = "Thank you for returning the book.";
 
         if (inputId < 1 && inputBookName == null)
-            return new OperationBookMessage(false, failMsg);
+            return new OperationMessage(false, failMsg);
         inputId = inputId == null ? 0 : inputId;
         inputBookName = inputBookName == null ? "" : inputBookName;
 
@@ -144,19 +144,19 @@ public class BookService {
             }
         }
         if (checkoutBook == null)
-            return new OperationBookMessage(false,failMsg);
+            return new OperationMessage(false,failMsg);
 
         checkoutBookList.remove(checkoutBook);
         bookList.add(checkoutBook);
 
-        return new OperationBookMessage(true,successMsg);
+        return new OperationMessage(true,successMsg);
     }
 
-    public OperationBookMessage returnBook(Integer id){
+    public OperationMessage returnBook(Integer id){
         return returnBook(id,null);
     }
 
-    public OperationBookMessage returnBook(String bookName) {
+    public OperationMessage returnBook(String bookName) {
         return returnBook(null,bookName);
     }
 }
