@@ -11,12 +11,6 @@ import com.twu.biblioteca.model.OperationMessage;
 public class MovieService {
     private static MovieService movieService = null;
 
-    public static MovieService getInstance(){
-        if (movieService == null){
-            return new MovieService();
-        }
-        return new MovieService();
-    }
     /**
      * movie lists
      */
@@ -41,11 +35,19 @@ public class MovieService {
         movieList.add(new MovieEntity(6,"StarTrek",8.1));
     }
 
+    public static MovieService getInstance(){
+        if (movieService == null){
+            movieService = new MovieService();
+        }
+        return movieService;
+    }
+
     public List<MovieEntity> getMovieList(){
         return movieList;
     }
 
     public String getMovieListStr(){
+        System.out.print(movieList);
         StringBuffer str = new StringBuffer();
         for (MovieEntity existMovieList:movieList){
             str.append("id: "+ existMovieList.getId() + "\tMovie name： "+ existMovieList.getMovieName()+
