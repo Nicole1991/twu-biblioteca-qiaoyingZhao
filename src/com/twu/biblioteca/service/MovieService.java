@@ -47,7 +47,6 @@ public class MovieService {
     }
 
     public String getMovieListStr(){
-        System.out.print(movieList);
         StringBuffer str = new StringBuffer();
         for (MovieEntity existMovieList:movieList){
             str.append("id: "+ existMovieList.getId() + "\tMovie name： "+ existMovieList.getMovieName()+

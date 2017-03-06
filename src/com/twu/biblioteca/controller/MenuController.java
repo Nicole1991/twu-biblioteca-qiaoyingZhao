@@ -20,49 +20,32 @@ public class MenuController {
     MovieEntity movieEntity = null;
     OperationMessage optMsg = new OperationMessage();
 
-    public void menuControl(boolean flag){
+    public void menuControl(boolean flag) {
         String str;
         int grade = 0;
 
         Integer id = 0;
-        while (flag){
-            switch (grade){
+        while (flag) {
+            switch (grade) {
                 case 0://first level of the menu
                     View.printPrompt("Please enter the function what you need!");
-                    View.printPrompt("1:Book List;2:Checkout Book;3:Return Book;4:Movie List;0:Return the main menu;9:Exit System");
-                    Scanner sc = new Scanner(System.in);
-                    str = sc.next();
+                    View.printPrompt("1:Book List;2:Checkout Book;3:Return Book;4:Movie List;" +
+                            "5:Checkout Movie;9:Exit System;0:Return the main menu;");
+                    str = getInputInformationFromKeyboard();
                     grade = getSelectedMenuLevel(str);
                     break;
                 case 1://Book List
                     View.printPrompt("Book List");
                     View.printBookList();
                     View.printPrompt("Please Enter Id or Name Which Book You Want Check!");
-                    sc = new Scanner(System.in);
-                    str = sc.next().trim();
-                    id = 0;
-                    try {
-                        id = Integer.parseInt(str);
-                    } catch (Exception e) {
-                    }
-                    bookEntity = null;
-                    if (id > 0) {
-                        bookEntity = bookService.getBook(id);
-                    } else {
-                        bookEntity = bookService.getBook(str);
-                    }
-                    if (bookEntity == null)
-                        View.printPrompt("The title you entered does not exist！");
-                    else {
-                        System.out.println(bookEntity);
-                    }
+                    str = getInputInformationFromKeyboard();
+                    showBookDetails(str);
                     grade = 0;
                     break;
 
                 case 2://checkout book
                     View.printPrompt("Please enter the book which you want to checkout!");
-                    sc = new Scanner(System.in);
-                    str = sc.next().trim();
+                    str = getInputInformationFromKeyboard();
                     id = 0;
                     try {
                         id = Integer.parseInt(str);
@@ -80,8 +63,7 @@ public class MenuController {
 
                 case 3://Return book
                     View.printPrompt("Please enter the book which you want to return!");
-                    sc = new Scanner(System.in);
-                    str = sc.next().trim();
+                    str = getInputInformationFromKeyboard();
                     id = 0;
                     try {
                         id = Integer.parseInt(str);
@@ -101,24 +83,26 @@ public class MenuController {
                     View.printPrompt("Movie List:");
                     View.printMovieList();
                     View.printPrompt("Please Enter Id or Name Which Movie You Want Check!");
-                    sc = new Scanner(System.in);
-                    str = sc.next().trim();
+                    str = getInputInformationFromKeyboard();
+                    showMovieDetails(str);
+                    grade = 0;
+                    break;
+
+                case 5://checkout movie
+                    View.printPrompt("Please enter the book which you want to checkout!");
+                    str = getInputInformationFromKeyboard();
                     id = 0;
                     try {
                         id = Integer.parseInt(str);
                     } catch (Exception e) {
                     }
-                    movieEntity = null;
+                    optMsg = null;
                     if (id > 0) {
-                        movieEntity = movieService.getMovie(id);
+                        optMsg = movieService.checkoutMovie(id);
                     } else {
-                        movieEntity = movieService.getMovie(str);
+                        optMsg = movieService.checkoutMovie(str);
                     }
-                    if (movieEntity == null)
-                        View.printPrompt("The title you entered does not exist！");
-                    else {
-                        System.out.println(movieEntity);
-                    }
+                    View.printPrompt(optMsg.getErrorMessage());
                     grade = 0;
                     break;
 
@@ -133,7 +117,45 @@ public class MenuController {
         }
     }
 
-    public int getSelectedMenuLevel(String inputStr){
+    public void showBookDetails(String inputInformation) {
+        int id = 0;
+        try {
+            id = Integer.parseInt(inputInformation);
+        } catch (Exception e) {
+        }
+        bookEntity = null;
+        if (id > 0) {
+            bookEntity = bookService.getBook(id);
+        } else {
+            bookEntity = bookService.getBook(inputInformation);
+        }
+        if (bookEntity == null)
+            View.printPrompt("The title you entered does not exist！");
+        else {
+            System.out.println(bookEntity);
+        }
+    }
+
+    public void showMovieDetails(String inputInformation) {
+        Integer id = 0;
+        try {
+            id = Integer.parseInt(inputInformation);
+        } catch (Exception e) {
+        }
+        movieEntity = null;
+        if (id > 0) {
+            movieEntity = movieService.getMovie(id);
+        } else {
+            movieEntity = movieService.getMovie(inputInformation);
+        }
+        if (movieEntity == null)
+            View.printPrompt("The title you entered does not exist！");
+        else {
+            System.out.println(movieEntity);
+        }
+    }
+
+    public int getSelectedMenuLevel(String inputStr) {
         int grade;
         if (inputStr.equals("Book List") || inputStr.equals("1")) {
             grade = 1;
@@ -143,9 +165,13 @@ public class MenuController {
             grade = 3;
         } else if (inputStr.equals("Movie List:") || inputStr.equals("4")) {
             grade = 4;
-        } else if (inputStr.equals("Return the main menu") || inputStr.equals("0")){
+        } else if (inputStr.equals("Checkout Movie") || inputStr.equals("5")) {
+            grade = 5;
+        } else if (inputStr.equals("Exit System!") || inputStr.equals("9")){
+            grade = 9;
+        } else if (inputStr.equals("Return the main menu") || inputStr.equals("0")) {
             grade = 0;
-        }else {
+        } else {
             View.printPrompt("Error Input！");
             grade = 0;
         }
@@ -179,5 +205,11 @@ public class MenuController {
                 grade = 0;
         }*/
         return grade;
+    }
+
+    public String getInputInformationFromKeyboard() {
+        Scanner sc = new Scanner(System.in);
+        String str = sc.next().trim();
+        return str;
     }
 }
